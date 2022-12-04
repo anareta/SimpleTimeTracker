@@ -1,0 +1,36 @@
+﻿<Window
+    x:Class="SimpleTimeTracker.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:SimpleTimeTracker.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:SimpleTimeTracker.ViewModel"
+    Title="SimpleTimeTracker"
+    Width="800"
+    Height="450"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <viewModel:MainWindowViewModelClosingBehavior />
+    </i:Interaction.Behaviors>
+    <Grid>
+        <!--  メインコンテンツ  -->
+        <ContentControl Content="{Binding Content}" FocusVisualStyle="{x:Null}">
+            <ContentControl.Resources>
+                <!--  View と ViewModel の紐付け  -->
+                <DataTemplate DataType="{x:Type viewModel:TimeTrackerApplicationViewModel}">
+                    <local:TimeTrackerPage />
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+    </Grid>
+</Window>

@@ -1,0 +1,201 @@
+﻿<UserControl
+    x:Class="SimpleTimeTracker.View.TimeTrackerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:SimpleTimeTracker.View"
+    xmlns:localbhv="clr-namespace:SimpleTimeTracker.View.Behavior"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="#F0F0F0"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Row="0" Margin="10">
+                <CheckBox Content="常に最前面に表示する" Checked="TopMost_Checked" Unchecked="TopMost_Unchecked" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+
+                <ItemsControl ItemsSource="{Binding TimeTrackers}">
+                    <ItemsControl.Template>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <ItemsPresenter />
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+
+                            <materialDesign:Card
+                                Margin="10,5,10,5"
+                                Padding="5"
+                                UniformCornerRadius="2">
+                                <DockPanel>
+                                    <materialDesign:Flipper
+                                        Width="60"
+                                        Height="60"
+                                        Margin="20,10,20,10"
+                                        VerticalAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        DockPanel.Dock="Left"
+                                        IsFlipped="{Binding IsFlipped.Value}"
+                                        Style="{StaticResource MaterialDesignCardFlipper}">
+                                        <materialDesign:Flipper.FrontContent>
+                                            <Button
+                                                Width="60"
+                                                Height="60"
+                                                Padding="0"
+                                                VerticalAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Command="{Binding TimeStateChangedCommand}"
+                                                Style="{StaticResource MaterialDesignFlatButton}">
+                                                <materialDesign:PackIcon
+                                                    Width="50"
+                                                    Height="50"
+                                                    Margin="5"
+                                                    Background="Transparent"
+                                                    Foreground="Black"
+                                                    Kind="TimerOutline" />
+                                            </Button>
+                                        </materialDesign:Flipper.FrontContent>
+                                        <materialDesign:Flipper.BackContent>
+                                            <Button
+                                                Width="60"
+                                                Height="60"
+                                                Padding="0"
+                                                VerticalAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Background="#F0F0F0"
+                                                Command="{Binding TimeStateChangedCommand}"
+                                                Style="{StaticResource MaterialDesignFlatButton}">
+                                                <materialDesign:PackIcon
+                                                    Width="50"
+                                                    Height="50"
+                                                    Margin="5"
+                                                    Background="Red"
+                                                    Foreground="White"
+                                                    Kind="TimerPlus" />
+                                            </Button>
+                                        </materialDesign:Flipper.BackContent>
+                                    </materialDesign:Flipper>
+
+                                    <DockPanel DockPanel.Dock="Right">
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
+                                            <Button
+                                                Width="24"
+                                                Height="24"
+                                                Margin="2"
+                                                Padding="0"
+                                                VerticalAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Background="Transparent"
+                                                Command="{Binding MoveUpCommand}"
+                                                Style="{StaticResource MaterialDesignFlatButton}">
+                                                <materialDesign:PackIcon
+                                                    Width="20"
+                                                    Height="20"
+                                                    Kind="ArrowUpBoldOutline" />
+                                            </Button>
+                                            <Button
+                                                Width="24"
+                                                Height="24"
+                                                Margin="2"
+                                                Padding="0"
+                                                VerticalAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Background="Transparent"
+                                                Command="{Binding MoveDownCommand}"
+                                                Style="{StaticResource MaterialDesignFlatButton}">
+                                                <materialDesign:PackIcon
+                                                    Width="20"
+                                                    Height="20"
+                                                    Kind="ArrowDownBoldOutline" />
+                                            </Button>
+                                            <Button
+                                                Width="24"
+                                                Height="24"
+                                                Margin="2"
+                                                Padding="0"
+                                                VerticalAlignment="Stretch"
+                                                VerticalContentAlignment="Center"
+                                                Background="Transparent"
+                                                Command="{Binding DeleteCommand}"
+                                                Style="{StaticResource MaterialDesignFlatButton}">
+                                                <materialDesign:PackIcon
+                                                    Width="20"
+                                                    Height="20"
+                                                    Kind="Delete" />
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                                            <TextBox
+                                                Margin="5"
+                                                Padding="5"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Text="{Binding Title.Value}" />
+                                            <TextBox
+                                                Margin="5"
+                                                Padding="5"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Foreground="{StaticResource PrimaryHueMidBrush}"
+                                                IsReadOnly="True"
+                                                Text="{Binding Time.Value}">
+                                                <bhv:Interaction.Behaviors>
+                                                    <localbhv:TextBoxSelectAllWhenFocusBehavior />
+                                                </bhv:Interaction.Behaviors>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DockPanel>
+                            </materialDesign:Card>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+                <Button
+                    Margin="20"
+                    Command="{Binding AddNewCommand}"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                    ToolTip="MaterialDesignFloatingActionMiniDarkButton">
+                    <materialDesign:PackIcon
+                        Width="30"
+                        Height="30"
+                        Kind="Plus" />
+
+                </Button>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
