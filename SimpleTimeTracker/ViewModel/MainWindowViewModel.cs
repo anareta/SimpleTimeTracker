@@ -2,7 +2,9 @@
 using Microsoft.Xaml.Behaviors;
 using SimpleTimeTracker.Core;
 using System;
+using System.IO;
 using System.Reactive.Disposables;
+using System.Reflection;
 using System.Windows;
 
 namespace SimpleTimeTracker.ViewModel
@@ -11,7 +13,7 @@ namespace SimpleTimeTracker.ViewModel
     {
         public MainWindowViewModel()
         {
-            this._Model = new TimeTrackerApplication();
+            this._Model = new TimeTrackerApplication(Path.Combine(GetCurrentAppDirectoryPath(), "storage.json"));
             this._Content = new TimeTrackerApplicationViewModel(this._Model);
         }
 
@@ -27,7 +29,11 @@ namespace SimpleTimeTracker.ViewModel
         }
         private IOnClosing _Content;
 
-        
+        private static string GetCurrentAppDirectoryPath()
+        {
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+        }
+
     }
 
     public class MainWindowViewModelClosingBehavior : Behavior<Window>

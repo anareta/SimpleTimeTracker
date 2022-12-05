@@ -1,7 +1,5 @@
 ﻿using Reactive.Bindings;
 using SimpleTimeTracker.Core;
-using System.IO;
-using System.Reflection;
 
 namespace SimpleTimeTracker.ViewModel
 {
@@ -25,19 +23,12 @@ namespace SimpleTimeTracker.ViewModel
 
         public void OnClosing()
         {
-            var path = GetCurrentAppDirectoryPath();
-            this._Model.Store(Path.Combine(path, "storage.json"));
+            this._Model.Store();
         }
 
         public void OnStarting()
         {
-            var path = GetCurrentAppDirectoryPath();
-            this._Model.Restore(Path.Combine(path, "storage.json"));
-        }
-
-        public static string GetCurrentAppDirectoryPath()
-        {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+            this._Model.Restore();
         }
     }
 }

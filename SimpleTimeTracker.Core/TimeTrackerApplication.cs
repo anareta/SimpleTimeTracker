@@ -2,25 +2,41 @@
 using Livet.StatefulModel;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace SimpleTimeTracker.Core
 {
     public class TimeTrackerApplication
     {
-        public TimeTrackerApplication() 
+        public TimeTrackerApplication(string storePath) 
         {
+            this._StorePath = storePath;
+            this._Switched = new Subject<TimerState>();
+            this._Switched.Subscribe(x => this._WantSave = true);
+            this._Switched.Throttle(TimeSpan.FromSeconds(10))
+                .Where(_ => this._Source.All(x => x.TimerState == TimerState.Stop))
+                .Where(_ => this._WantSave)
+                .Subscribe(_ => this.Store());
+
             this._Source.Add(this.SubscribeChild(new TimeTracker()));
         }
 
         private readonly ObservableSynchronizedCollection<TimeTracker> _Source = new ObservableSynchronizedCollection<TimeTracker>();
         public ReadOnlyNotifyChangedCollection<TimeTracker> Collcetion => _Source.ToSyncedReadOnlyNotifyChangedCollection();
 
+        private Subject<TimerState> _Switched;
+        private bool _WantSave = false;
+
+        private string _StorePath;
 
         private TimeTracker SubscribeChild(TimeTracker child)
         {
             child.Switched.Subscribe(_ =>
             {
                 var state = child.TimerState;
+                this._Switched.OnNext(state);
                 if (state == TimerState.Count)
                 {
                     foreach (var item in this._Source.Where(x => x.Id != child.Id).Where(x => x.TimerState == TimerState.Count))
@@ -65,7 +81,7 @@ namespace SimpleTimeTracker.Core
             this._Source.Add(this.SubscribeChild(new TimeTracker()));
         }
 
-        public void Store(string path)
+        public void Store()
         {
             var entities = this._Source.Select(x =>
             {
@@ -73,17 +89,17 @@ namespace SimpleTimeTracker.Core
             });
             var str = JsonConvert.SerializeObject(entities);
 
-            File.WriteAllText(path, str);
+            File.WriteAllText(this._StorePath, str);
         }
 
-        public void Restore(string path)
+        public void Restore()
         {
-            if (!File.Exists(path))
+            if (!File.Exists(this._StorePath))
             {
                 return;
             }
 
-            var str = File.ReadAllText(path);
+            var str = File.ReadAllText(this._StorePath);
 
             if (string.IsNullOrWhiteSpace(str))
             {
