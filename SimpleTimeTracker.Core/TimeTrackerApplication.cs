@@ -69,7 +69,7 @@ namespace SimpleTimeTracker.Core
         {
             var entities = this._Source.Select(x =>
             {
-                return new TimeTrackerEntity(x.Time.Seconds, x.Title);
+                return new TimeTrackerEntity((int)x.Time.TotalSeconds, x.Title);
             });
             var str = JsonConvert.SerializeObject(entities);
 
