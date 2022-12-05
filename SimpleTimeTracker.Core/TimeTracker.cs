@@ -150,6 +150,17 @@ namespace SimpleTimeTracker.Core
         {
             this._MoveRequest.OnNext(v);
         }
+
+        public void AddTime(double v)
+        {
+            if (this._TimerState == TimerState.Count)
+            {
+                return;
+            }
+
+            this.Time += TimeSpan.FromHours(v);
+            this.TimeLabel = this.TimeToString(this.Time);
+        }
     }
 
     public enum TimerState

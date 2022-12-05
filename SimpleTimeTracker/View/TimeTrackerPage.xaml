@@ -25,16 +25,23 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Vertical" Grid.Row="0" Margin="10">
-                <CheckBox Content="常に最前面に表示する" Checked="TopMost_Checked" Unchecked="TopMost_Unchecked" />
-            </StackPanel>
-            <StackPanel Grid.Row="1" Orientation="Vertical">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Margin="10"
+            HorizontalAlignment="Left"
+            Orientation="Vertical">
+            <CheckBox
+                Checked="TopMost_Checked"
+                Content="常に最前面に表示する"
+                Unchecked="TopMost_Unchecked" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
+            <StackPanel Orientation="Vertical">
 
                 <ItemsControl ItemsSource="{Binding TimeTrackers}">
                     <ItemsControl.Template>
@@ -160,18 +167,50 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="16"
                                                 Text="{Binding Title.Value}" />
-                                            <TextBox
-                                                Margin="5"
-                                                Padding="5"
-                                                VerticalAlignment="Center"
-                                                FontSize="16"
-                                                Foreground="{StaticResource PrimaryHueMidBrush}"
-                                                IsReadOnly="True"
-                                                Text="{Binding Time.Value}">
-                                                <bhv:Interaction.Behaviors>
-                                                    <localbhv:TextBoxSelectAllWhenFocusBehavior />
-                                                </bhv:Interaction.Behaviors>
-                                            </TextBox>
+                                            <DockPanel Margin="0,0,20,0">
+
+                                                <Button
+                                                    Width="35"
+                                                    Height="25"
+                                                    Margin="2"
+                                                    Padding="0"
+                                                    VerticalAlignment="Stretch"
+                                                    VerticalContentAlignment="Center"
+                                                    BorderThickness="1"
+                                                    Command="{Binding PlusTimeCommand}"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                                    <TextBlock FontSize="12" Text="+0.1" />
+                                                </Button>
+                                                <Button
+                                                    Width="35"
+                                                    Height="25"
+                                                    Margin="2"
+                                                    Padding="0"
+                                                    VerticalAlignment="Stretch"
+                                                    VerticalContentAlignment="Center"
+                                                    BorderThickness="1"
+                                                    Command="{Binding MinusTimeCommand}"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                                    <TextBlock FontSize="12" Text="-0.1" />
+                                                </Button>
+
+                                                <TextBox
+                                                    Margin="5"
+                                                    Padding="5"
+                                                    VerticalAlignment="Center"
+                                                    DockPanel.Dock="Left"
+                                                    FontSize="16"
+                                                    Foreground="{StaticResource PrimaryHueMidBrush}"
+                                                    IsReadOnly="True"
+                                                    Text="{Binding Time.Value}">
+                                                    <bhv:Interaction.Behaviors>
+                                                        <localbhv:TextBoxSelectAllWhenFocusBehavior />
+                                                    </bhv:Interaction.Behaviors>
+                                                </TextBox>
+
+                                            </DockPanel>
                                         </StackPanel>
                                     </DockPanel>
                                 </DockPanel>
@@ -196,6 +235,6 @@
                 </Button>
 
             </StackPanel>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Grid>
 </UserControl>
