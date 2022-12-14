@@ -158,7 +158,22 @@ namespace SimpleTimeTracker.Core
                 return;
             }
 
-            this.Time += TimeSpan.FromHours(v);
+            var time = this.Time + TimeSpan.FromHours(v);
+
+            this.Time = time >= TimeSpan.FromMinutes(0) ? time : TimeSpan.FromMinutes(0);
+            this.TimeLabel = this.TimeToString(this.Time);
+        }
+
+        public void ClearTime()
+        {
+            var res = MessageBox.Show($"タイマー（{this.Title}）の時間をリセットしますか？", "タイマーの初期化", MessageBoxButton.OKCancel);
+
+            if (res != MessageBoxResult.OK)
+            {
+                return;
+            }
+
+            this.Time = TimeSpan.FromMinutes(0);
             this.TimeLabel = this.TimeToString(this.Time);
         }
     }

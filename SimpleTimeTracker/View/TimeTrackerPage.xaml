@@ -177,6 +177,20 @@
                                                     VerticalAlignment="Stretch"
                                                     VerticalContentAlignment="Center"
                                                     BorderThickness="1"
+                                                    Command="{Binding ClearTimeCommand}"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MaterialDesignFlatButton}">
+                                                    <TextBlock FontSize="12" Text="C" />
+                                                </Button>
+
+                                                <Button
+                                                    Width="35"
+                                                    Height="25"
+                                                    Margin="2"
+                                                    Padding="0"
+                                                    VerticalAlignment="Stretch"
+                                                    VerticalContentAlignment="Center"
+                                                    BorderThickness="1"
                                                     Command="{Binding PlusTimeCommand}"
                                                     DockPanel.Dock="Right"
                                                     Style="{StaticResource MaterialDesignFlatButton}">

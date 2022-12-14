@@ -37,12 +37,20 @@ namespace SimpleTimeTracker.ViewModel
                 .WithSubscribe(() => this._Model.Move(true))
                 .AddTo(this.Disposable);
 
+            this.MoveDownCommand = new ReactiveCommand()
+                .WithSubscribe(() => this._Model.Move(false))
+                .AddTo(this.Disposable);
+
             this.PlusTimeCommand = new ReactiveCommand()
                 .WithSubscribe(() => this._Model.AddTime(0.1))
                 .AddTo(this.Disposable);
 
             this.MinusTimeCommand = new ReactiveCommand()
                 .WithSubscribe(() => this._Model.AddTime(-0.1))
+                .AddTo(this.Disposable);
+
+            this.ClearTimeCommand = new ReactiveCommand()
+                .WithSubscribe(() => this._Model.ClearTime())
                 .AddTo(this.Disposable);
         }
 
@@ -65,5 +73,7 @@ namespace SimpleTimeTracker.ViewModel
         public ReactiveCommand MinusTimeCommand { get; set; }
 
         public ReactiveCommand PlusTimeCommand { get; set; }
+
+        public ReactiveCommand ClearTimeCommand { get; set; }
     }
 }
